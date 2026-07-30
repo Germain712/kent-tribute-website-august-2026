@@ -211,6 +211,35 @@ a:focus {
   background: transparent;
 }
 
+/* Homepage video */
+.home-video-section {
+  max-width: var(--max-width);
+  margin: 0 auto 2rem;
+  padding: 0 1.5rem;
+}
+
+.home-video-card {
+  background: var(--bg-alt);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--border-soft);
+}
+
+.home-video-wrapper {
+  margin-top: 1rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #000;
+}
+
+.home-video-wrapper video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 540px;
+}
+
 /* Intro cards */
 .intro {
   max-width: var(--max-width);
@@ -350,14 +379,27 @@ blockquote {
   height: 0;
   overflow: hidden;
   border-radius: var(--radius);
+  background: #000;
 }
 
-.video-wrapper iframe {
+.video-wrapper iframe,
+.video-wrapper video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   border: 0;
+}
+
+.video-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.95rem;
 }
 
 /* Footer */
