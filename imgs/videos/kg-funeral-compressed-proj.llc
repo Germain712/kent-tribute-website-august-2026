@@ -1,0 +1,71 @@
+{
+  version: 2,
+  mediaFileName: 'kg-funeral-compressed.mp4',
+  cutSegments: [
+    {
+      start: 0,
+      end: 667,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 667,
+      end: 1334,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 2001,
+      end: 2668,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 2668,
+      end: 3335,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 3335,
+      end: 4002,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 4002,
+      end: 4669,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 4669,
+      end: 5336,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 5336,
+      end: 6003,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 6003,
+      end: 6058.533,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 1334,
+      end: 1874,
+      name: '',
+      selected: true,
+    },
+    {
+      start: 654.4,
+      name: '',
+      selected: true,
+    },
+  ],
+}
