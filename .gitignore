@@ -1,0 +1,6 @@
+# macOS Finder and metadata artifacts
+.DS_Store
+._*
+
+# Windows explorer cache
+Thumbs.db
