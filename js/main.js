@@ -17,3 +17,91 @@ if (navToggle && mainNav) {
     link.addEventListener('click', closeMenu);
   });
 }
+
+// Gallery lightbox
+const galleryImages = document.querySelectorAll('.gallery-item img');
+
+if (galleryImages.length) {
+  const lightbox = document.createElement('div');
+  lightbox.className = 'gallery-lightbox';
+  lightbox.setAttribute('aria-hidden', 'true');
+
+  const lightboxInner = document.createElement('div');
+  lightboxInner.className = 'gallery-lightbox-inner';
+
+  const closeButton = document.createElement('button');
+  closeButton.type = 'button';
+  closeButton.className = 'gallery-lightbox-close';
+  closeButton.setAttribute('aria-label', 'Close image preview');
+  closeButton.textContent = '×';
+
+  const lightboxImage = document.createElement('img');
+  const lightboxCaption = document.createElement('div');
+  lightboxCaption.className = 'gallery-lightbox-caption';
+
+  lightboxInner.appendChild(closeButton);
+  lightboxInner.appendChild(lightboxImage);
+  lightboxInner.appendChild(lightboxCaption);
+  lightbox.appendChild(lightboxInner);
+  document.body.appendChild(lightbox);
+
+  const closeLightbox = () => {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  closeButton.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (event) => {
+    if (event.target === lightbox) {
+      closeLightbox();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && lightbox.classList.contains('open')) {
+      closeLightbox();
+    }
+  });
+
+  galleryImages.forEach((image) => {
+    image.parentElement.setAttribute('tabindex', '0');
+    const openLightbox = () => {
+      lightboxImage.src = image.src;
+      lightboxImage.alt = image.alt || 'Kent Germain photo';
+      lightboxCaption.textContent = image.alt || 'Kent Germain photo';
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    };
+
+    image.parentElement.addEventListener('click', openLightbox);
+    image.parentElement.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openLightbox();
+      }
+    });
+  });
+}
+
+// Back-to-top control
+const backToTopButton = document.createElement('button');
+backToTopButton.type = 'button';
+backToTopButton.className = 'back-to-top';
+backToTopButton.setAttribute('aria-label', 'Back to top');
+backToTopButton.textContent = '↑';
+
+document.body.appendChild(backToTopButton);
+
+const toggleBackToTop = () => {
+  const shouldShow = window.scrollY > 300;
+  backToTopButton.classList.toggle('visible', shouldShow);
+};
+
+window.addEventListener('scroll', toggleBackToTop, { passive: true });
+backToTopButton.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+toggleBackToTop();
