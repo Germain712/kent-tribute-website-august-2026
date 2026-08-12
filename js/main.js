@@ -85,6 +85,37 @@ if (galleryImages.length) {
   });
 }
 
+// Load funeral videos only when they enter the viewport, which improves mobile playback
+const lazyVideos = document.querySelectorAll('.video-card video');
+
+if (lazyVideos.length && 'IntersectionObserver' in window) {
+  const observer = new IntersectionObserver((entries, currentObserver) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+
+      const video = entry.target;
+      const source = video.querySelector('source[data-src]');
+
+      if (source && !source.getAttribute('src')) {
+        source.setAttribute('src', source.getAttribute('data-src'));
+        video.load();
+      }
+
+      currentObserver.unobserve(video);
+    });
+  }, { rootMargin: '200px 0px' });
+
+  lazyVideos.forEach((video) => observer.observe(video));
+} else {
+  lazyVideos.forEach((video) => {
+    const source = video.querySelector('source[data-src]');
+    if (source && !source.getAttribute('src')) {
+      source.setAttribute('src', source.getAttribute('data-src'));
+      video.load();
+    }
+  });
+}
+
 // Back-to-top control
 const backToTopButton = document.createElement('button');
 backToTopButton.type = 'button';
