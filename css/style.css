@@ -512,6 +512,12 @@ blockquote {
   gap: 0.35rem 1rem;
 }
 
+.video-mobile-note {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 .video-part-nav {
   margin: 0.75rem 0 0;
   font-size: 0.9rem;

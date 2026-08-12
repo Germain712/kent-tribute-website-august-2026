@@ -85,35 +85,66 @@ if (galleryImages.length) {
   });
 }
 
-// Load funeral videos only when they enter the viewport, which improves mobile playback
+// Load funeral videos only when they enter the viewport, which improves mobile playback.
+// When a mobile-optimized version exists, prefer that one for smaller screens.
 const lazyVideos = document.querySelectorAll('.video-card video');
 
+const prefersMobileVideo = () => {
+  const isSmallViewport = window.matchMedia('(max-width: 768px)').matches;
+  const isTouchDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(
+    navigator.userAgent,
+  );
+  return isSmallViewport || isTouchDevice;
+};
+
+const loadVideoSource = (video) => {
+  const source = video.querySelector('source[data-src]');
+  if (!source) return;
+
+  const originalSource = source.getAttribute('data-src');
+  const fileName = originalSource.split('/').pop();
+  const mobileSource = `videos/mobile/${fileName.replace(/\.mp4$/i, '')}-mobile.mp4`;
+  const targetSource = prefersMobileVideo() ? mobileSource : originalSource;
+
+  if (source.getAttribute('src') !== targetSource) {
+    source.setAttribute('src', targetSource);
+  }
+
+  if (!video.dataset.mobileFallbackBound) {
+    video.addEventListener(
+      'error',
+      () => {
+        if (source.getAttribute('src') === mobileSource) {
+          source.setAttribute('src', originalSource);
+          video.load();
+        }
+      },
+      { once: true },
+    );
+    video.dataset.mobileFallbackBound = 'true';
+  }
+
+  video.setAttribute('preload', 'metadata');
+  video.load();
+};
+
 if (lazyVideos.length && 'IntersectionObserver' in window) {
-  const observer = new IntersectionObserver((entries, currentObserver) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
+  const observer = new IntersectionObserver(
+    (entries, currentObserver) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
 
-      const video = entry.target;
-      const source = video.querySelector('source[data-src]');
-
-      if (source && !source.getAttribute('src')) {
-        source.setAttribute('src', source.getAttribute('data-src'));
-        video.load();
-      }
-
-      currentObserver.unobserve(video);
-    });
-  }, { rootMargin: '200px 0px' });
+        const video = entry.target;
+        loadVideoSource(video);
+        currentObserver.unobserve(video);
+      });
+    },
+    { rootMargin: '200px 0px' },
+  );
 
   lazyVideos.forEach((video) => observer.observe(video));
 } else {
-  lazyVideos.forEach((video) => {
-    const source = video.querySelector('source[data-src]');
-    if (source && !source.getAttribute('src')) {
-      source.setAttribute('src', source.getAttribute('data-src'));
-      video.load();
-    }
-  });
+  lazyVideos.forEach((video) => loadVideoSource(video));
 }
 
 // Back-to-top control
